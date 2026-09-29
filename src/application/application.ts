@@ -35,12 +35,12 @@ export class Application {
             await this.grpcService.start();
             await this.websocketClientService.start();
             logger.info(
-                '🚀 Jarvis service started',
+                '🚀 Remy service started',
             );
         } catch (err) {
             logger.error(
                 {err},
-                '💥 Failed to start Jarvis service',
+                '💥 Failed to start Remy service',
             );
             process.exit(1);
         }

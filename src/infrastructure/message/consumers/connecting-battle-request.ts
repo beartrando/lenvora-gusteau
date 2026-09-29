@@ -5,13 +5,13 @@ import ConnectToBattleUseCase from "../../../application/use-cases/battle/connec
 import logger from "@shared/logger";
 
 
-export class ConnectingBattleRequestConsumer implements UseCaseInterface<streamingProto.BattleJoinJarvis> {
+export class ConnectingBattleRequestConsumer implements UseCaseInterface<streamingProto.BattleJoinRemy> {
     constructor(
         private readonly connectToBattleUseCase: ConnectToBattleUseCase,
     ) {
     }
 
-    async execute(topic: string, partition: number, message: streamingProto.BattleJoinJarvis): Promise<void> {
+    async execute(topic: string, partition: number, message: streamingProto.BattleJoinRemy): Promise<void> {
         try {
             logger.log('message received', message);
             this.connectToBattleUseCase.execute(new BattleId(message.battleId));

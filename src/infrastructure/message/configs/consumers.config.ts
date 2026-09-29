@@ -1,5 +1,5 @@
 export const messageConsumersConfig: Record<string, string> = {
-    jarvisConnectingRequest: process.env.MESSAGE_CONSUMER_TOPIC_AI_CONNECTING_REQUEST ?? "jarvis.connecting-request",
+    remyConnectingRequest: process.env.MESSAGE_CONSUMER_TOPIC_REMY_CONNECTING_REQUEST ?? "remy.connecting-request",
 };
 
 export default messageConsumersConfig;
