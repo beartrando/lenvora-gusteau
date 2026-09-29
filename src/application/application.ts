@@ -35,12 +35,12 @@ export class Application {
             await this.grpcService.start();
             await this.websocketClientService.start();
             logger.info(
-                '🚀 Remy service started',
+                '🚀 Gusteau service started',
             );
         } catch (err) {
             logger.error(
                 {err},
-                '💥 Failed to start Remy service',
+                '💥 Failed to start Gusteau service',
             );
             process.exit(1);
         }

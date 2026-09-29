@@ -5,7 +5,7 @@
 // import BattleInitUseCase from "../../../application/use-cases/battle/battle-start";
 // import BattleUpdatedUseCase from "../../../application/use-cases/battle/battle-move";
 // import BattleLeaveUseCase from "../../../application/use-cases/battle/battle-leave";
-// import BattleConnectRemyUseCase from "../../../application/use-cases/battle/battle-connect-remy";
+// import BattleConnectGusteauUseCase from "../../../application/use-cases/battle/battle-connect-gusteau";
 // import BattlePingUseCase from "../../../application/use-cases/battle/battle-ping";
 // import SocketEncoding from "../enums/socket-encoding";
 //
@@ -14,7 +14,7 @@
 //         private readonly start: BattleInitUseCase,
 //         private readonly move: BattleUpdatedUseCase,
 //         private readonly ping: BattlePingUseCase,
-//         private readonly connectRemy: BattleConnectRemyUseCase,
+//         private readonly connectGusteau: BattleConnectGusteauUseCase,
 //         private readonly leave: BattleLeaveUseCase,
 //     ) {
 //     }

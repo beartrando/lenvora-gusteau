@@ -96,7 +96,7 @@ describe("Gateway Service", () => {
         // console.log(accessToken2);
 
         if (!accessToken1 || !accessToken2) {
-            throw new Error("Failed to authenticate test remys");
+            throw new Error("Failed to authenticate test gusteaus");
         }
 
         const fetchProfileUseCase = new FetchProfileUseCase(httpService);

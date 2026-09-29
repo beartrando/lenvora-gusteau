@@ -92,7 +92,7 @@ function buildApplication() {
     );
 
     messageService.addConsumer(
-        messageConsumersConfig.remyConnectingRequest,
+        messageConsumersConfig.gusteauConnectingRequest,
         connectingBattleRequestConsumer.execute.bind(connectingBattleRequestConsumer)
     );
 
