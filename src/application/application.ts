@@ -35,12 +35,12 @@ export class Application {
             await this.grpcService.start();
             await this.websocketClientService.start();
             logger.info(
-                '🚀 Bot service started',
+                '🚀 Jarvis service started',
             );
         } catch (err) {
             logger.error(
                 {err},
-                '💥 Failed to start Bot service',
+                '💥 Failed to start Jarvis service',
             );
             process.exit(1);
         }

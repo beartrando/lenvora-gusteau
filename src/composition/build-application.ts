@@ -92,7 +92,7 @@ function buildApplication() {
     );
 
     messageService.addConsumer(
-        messageConsumersConfig.botConnectingRequest,
+        messageConsumersConfig.jarvisConnectingRequest,
         connectingBattleRequestConsumer.execute.bind(connectingBattleRequestConsumer)
     );
 
