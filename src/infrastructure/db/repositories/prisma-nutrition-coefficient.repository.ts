@@ -1,18 +1,22 @@
-import NutritionCoefficientsEntity from "../../../domain/nutrition-coefficients/nutrition-coefficients.entity";
-import NutritionCoefficientsRepository from "../../../domain/nutrition-coefficients/nutrition-coefficients.repository";
+import NutritionCoefficientEntity from "../../../domain/nutrition-coefficient/nutrition-coefficient";
+import NutritionCoefficientRepository from "../../../domain/nutrition-coefficient/nutrition-coefficient.repository";
 import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
-import prisma from "../prisma";
-import NutritionCoefficientsDbMapper from "../mappers/nutrition-coefficients.db.mapper";
+import NutritionCoefficientDbMapper from "../mappers/nutrition-coefficient.db.mapper";
+import {PrismaClient} from "@prisma/client";
 
 export class PrismaNutritionCoefficientsRepository
-    implements NutritionCoefficientsRepository {
+    implements NutritionCoefficientRepository {
 
+    constructor(
+        private readonly prisma: PrismaClient,
+    ) {
+    }
     async save(
-        coefficients: NutritionCoefficientsEntity,
-    ): Promise<NutritionCoefficientsEntity> {
-        const data = NutritionCoefficientsDbMapper.toPersistence(coefficients);
+        coefficients: NutritionCoefficientEntity,
+    ): Promise<NutritionCoefficientEntity> {
+        const data = NutritionCoefficientDbMapper.toPersistence(coefficients);
 
-        const result = await prisma.nutritionCoefficients.upsert({
+        const result = await this.prisma.nutritionCoefficient.upsert({
             where: {
                 id: data.id,
             },
@@ -20,19 +24,19 @@ export class PrismaNutritionCoefficientsRepository
             update: data,
         });
 
-        return NutritionCoefficientsDbMapper.toDomain(result);
+        return NutritionCoefficientDbMapper.toDomain(result);
     }
 
     async findByProfileId(
         profileId: ProfileId,
-    ): Promise<NutritionCoefficientsEntity> {
-        const result = await prisma.nutritionCoefficients.findUniqueOrThrow({
+    ): Promise<NutritionCoefficientEntity> {
+        const result = await this.prisma.nutritionCoefficient.findUniqueOrThrow({
             where: {
                 profileId: profileId.value,
             },
         });
 
-        return NutritionCoefficientsDbMapper.toDomain(result);
+        return NutritionCoefficientDbMapper.toDomain(result);
     }
 }
 

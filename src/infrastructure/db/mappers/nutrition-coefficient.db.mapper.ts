@@ -6,15 +6,15 @@ import NutritionFatCoefficient from "../../../domain/nutrition-coefficients/valu
 import NutritionCarbsCoefficient from "../../../domain/nutrition-coefficients/value-objects/nutrition-carbs-coefficient.vo";
 import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
 
-type NutritionCoefficientsSaveData = Omit<
+type NutritionCoefficientSaveData = Omit<
     NutritionCoefficients,
     "createdAt" | "updatedAt"
 >;
 
-export class NutritionCoefficientsDbMapper {
+export class NutritionCoefficientDbMapper {
     static toPersistence(
         coefficients: NutritionCoefficientsEntity,
-    ): NutritionCoefficientsSaveData {
+    ): NutritionCoefficientSaveData {
         return {
             id: coefficients.id.value,
             profileId: coefficients.profileId.value,
@@ -42,4 +42,4 @@ export class NutritionCoefficientsDbMapper {
     }
 }
 
-export default NutritionCoefficientsDbMapper;
+export default NutritionCoefficientDbMapper;

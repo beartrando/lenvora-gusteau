@@ -25,7 +25,7 @@ model Product {
   @@map("products")
 }
 
-model NutritionCoefficients {
+model NutritionCoefficient {
   id        String @id @default(uuid())
   profileId String @unique @map("profile_id")
 
@@ -39,7 +39,7 @@ model NutritionCoefficients {
   @@map("nutrition_coefficients")
 }
 
-model FoodLogs {
+model FoodLog {
   id          String @id @default(uuid())
   profileId   String @map("profile_id")
   productName String @map("product_name")

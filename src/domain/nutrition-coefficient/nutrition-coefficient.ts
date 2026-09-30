@@ -4,7 +4,7 @@ import NutritionProteinCoefficient from "./value-objects/nutrition-protein-coeff
 import NutritionFatCoefficient from "./value-objects/nutrition-fat-coefficient.vo";
 import NutritionCarbsCoefficient from "./value-objects/nutrition-carbs-coefficient.vo";
 
-type NutritionCoefficientsEntityProps = {
+type NutritionCoefficientEntityProps = {
     id?: NutritionCoefficientsId;
     profileId: ProfileId;
     protein: NutritionProteinCoefficient;
@@ -14,7 +14,7 @@ type NutritionCoefficientsEntityProps = {
     updatedAt?: Date;
 };
 
-export class NutritionCoefficientsEntity {
+export class NutritionCoefficientEntity {
     constructor(
         readonly id: NutritionCoefficientsId,
         readonly profileId: ProfileId,
@@ -27,11 +27,11 @@ export class NutritionCoefficientsEntity {
     }
 
     static create(
-        props: NutritionCoefficientsEntityProps,
-    ): NutritionCoefficientsEntity {
+        props: NutritionCoefficientEntityProps,
+    ): NutritionCoefficientEntity {
         const now = new Date();
 
-        return new NutritionCoefficientsEntity(
+        return new NutritionCoefficientEntity(
             props.id ?? NutritionCoefficientsId.create(),
             props.profileId,
             props.protein,
@@ -43,4 +43,4 @@ export class NutritionCoefficientsEntity {
     }
 }
 
-export default NutritionCoefficientsEntity;
+export default NutritionCoefficientEntity;

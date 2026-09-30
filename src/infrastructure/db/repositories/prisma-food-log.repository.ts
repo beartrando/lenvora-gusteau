@@ -3,12 +3,18 @@ import FoodLogRepository from "../../../domain/food-log/food-log.repository";
 import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
 import prisma from "../prisma";
 import FoodLogDbMapper from "../mappers/food-log.db.mapper";
+import {PrismaClient} from "@prisma/client";
 
 export class PrismaFoodLogRepository implements FoodLogRepository {
+
+    constructor(
+        private readonly prisma: PrismaClient,
+    ) {
+    }
     async save(foodLog: FoodLogEntity): Promise<FoodLogEntity> {
         const data = FoodLogDbMapper.toPersistence(foodLog);
 
-        const result = await prisma.foodLogs.upsert({
+        const result = await this.prisma.foodLogs.upsert({
             where: {
                 id: data.id,
             },
@@ -22,7 +28,7 @@ export class PrismaFoodLogRepository implements FoodLogRepository {
     async findByProfileId(
         profileId: ProfileId,
     ): Promise<FoodLogEntity[]> {
-        const results = await prisma.foodLogs.findMany({
+        const results = await this.prisma.foodLogs.findMany({
             where: {
                 profileId: profileId.value,
             },

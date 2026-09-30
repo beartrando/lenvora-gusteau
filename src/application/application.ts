@@ -2,8 +2,6 @@ import logger from "@shared/logger";
 import GrpcService from "../infrastructure/grpc/service";
 import JobService from "../infrastructure/job/service";
 import MessageService from "../infrastructure/message/service";
-import WebsocketClientService from "../infrastructure/websocket/client.service";
-import AuthService from "../infrastructure/auth/service";
 
 export class Application {
     constructor(
