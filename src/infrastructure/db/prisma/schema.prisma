@@ -14,14 +14,29 @@ model Product {
   name      String
   profileId String @map("profile_id")
 
-  protein Float
-  fat     Float
-  carbs   Float
+  calories Float
+  protein  Float
+  fat      Float
+  carbs    Float
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("products")
+}
+
+model NutritionCoefficients {
+  id        String @id @default(uuid())
+  profileId String @unique @map("profile_id")
+
+  protein Float @default(4)
+  fat     Float @default(9)
+  carbs   Float @default(4)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("nutrition_coefficients")
 }
 
 model FoodLogs {

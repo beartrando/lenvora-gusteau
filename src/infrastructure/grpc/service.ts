@@ -44,6 +44,14 @@ export class GrpcService {
         this.server.forceShutdown();
     }
 
+    private registerGusteauService() {
+        this.server.addService(healthProto.HealthService, {
+            check: this.healthHandler.check.bind(this.healthHandler),
+            status: this.healthHandler.status.bind(this.healthHandler),
+            livez: this.healthHandler.livez.bind(this.healthHandler),
+            readyz: this.healthHandler.readyz.bind(this.healthHandler),
+        });
+    }
     private registerHealthService() {
         this.server.addService(healthProto.HealthService, {
             check: this.healthHandler.check.bind(this.healthHandler),
@@ -54,7 +62,7 @@ export class GrpcService {
     }
 
     private addServices() {
-        // this.registerGusteauService();
+        this.registerGusteauService();
         this.registerHealthService();
     }
 }
