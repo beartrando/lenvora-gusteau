@@ -1,18 +1,16 @@
 import * as gusteauProto from "../../../contracts/proto/gusteau";
-import NutritionCoefficientsEntity, {
-    NutritionCoefficientsEntityProps,
-} from "../../../domain/nutrition-coefficients/nutrition-coefficients.entity";
-import NutritionCoefficientsId from "../../../domain/nutrition-coefficients/value-objects/nutrition-coefficients-id.vo";
-import NutritionProteinCoefficient from "../../../domain/nutrition-coefficients/value-objects/nutrition-protein-coefficient.vo";
-import NutritionFatCoefficient from "../../../domain/nutrition-coefficients/value-objects/nutrition-fat-coefficient.vo";
-import NutritionCarbsCoefficient from "../../../domain/nutrition-coefficients/value-objects/nutrition-carbs-coefficient.vo";
+import NutritionCoefficientEntity from "../../../domain/nutrition-coefficient/nutrition-coefficient.entity";
+import NutritionCoefficientId from "../../../domain/nutrition-coefficient/value-objects/nutrition-coefficient-id.vo";
+import NutritionProteinCoefficient from "../../../domain/nutrition-coefficient/value-objects/nutrition-protein-coefficient.vo";
+import NutritionFatCoefficient from "../../../domain/nutrition-coefficient/value-objects/nutrition-fat-coefficient.vo";
+import NutritionCarbsCoefficient from "../../../domain/nutrition-coefficient/value-objects/nutrition-carbs-coefficient.vo";
 import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
 
-export class NutritionCoefficientsProtoMapper {
+export class NutritionCoefficientProtoMapper {
     static toProto(
-        coefficients: NutritionCoefficientsEntity,
-    ): gusteauProto.NutritionCoefficientsObject {
-        return gusteauProto.NutritionCoefficientsObject.create({
+        coefficients: NutritionCoefficientEntity,
+    ): gusteauProto.NutritionCoefficientObject {
+        return gusteauProto.NutritionCoefficientObject.create({
             id: coefficients.id.value,
             profileId: coefficients.profileId.value,
             protein: coefficients.protein.value,
@@ -24,10 +22,10 @@ export class NutritionCoefficientsProtoMapper {
     }
 
     static toDomain(
-        coefficients: gusteauProto.NutritionCoefficientsObject,
-    ): NutritionCoefficientsEntity {
-        const coefficientsEntityProps: NutritionCoefficientsEntityProps = {
-            id: new NutritionCoefficientsId(coefficients.id),
+        coefficients: gusteauProto.NutritionCoefficientObject,
+    ): NutritionCoefficientEntity {
+        const coefficientsEntityProps = {
+            id: new NutritionCoefficientId(coefficients.id),
             profileId: new ProfileId(coefficients.profileId),
             protein: new NutritionProteinCoefficient(coefficients.protein),
             fat: new NutritionFatCoefficient(coefficients.fat),
@@ -40,8 +38,8 @@ export class NutritionCoefficientsProtoMapper {
                 : undefined,
         };
 
-        return NutritionCoefficientsEntity.create(coefficientsEntityProps);
+        return NutritionCoefficientEntity.create(coefficientsEntityProps);
     }
 }
 
-export default NutritionCoefficientsProtoMapper;
+export default NutritionCoefficientProtoMapper;

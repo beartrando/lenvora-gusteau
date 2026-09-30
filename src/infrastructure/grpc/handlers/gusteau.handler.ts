@@ -5,23 +5,26 @@ import logger from "@shared/logger";
 
 import CreateProductUseCase from "../../../application/use-cases/product/create-product";
 import GetProductUseCase from "../../../application/use-cases/product/get-product";
-import GetNutritionCoefficientsUseCase
-    from "../../../application/use-cases/nutrition-coefficients/get-nutrition-coefficients";
-import UpdateNutritionCoefficientsUseCase
-    from "../../../application/use-cases/nutrition-coefficients/update-nutrition-coefficients";
+import GetNutritionCoefficientUseCase
+    from "../../../application/use-cases/nutrition-coefficient/get-nutrition-coefficient";
+import UpdateNutritionCoefficientUseCase
+    from "../../../application/use-cases/nutrition-coefficient/update-nutrition-coefficient";
 import CreateFoodLogUseCase from "../../../application/use-cases/food-log/create-food-log";
 import GetFoodLogsUseCase from "../../../application/use-cases/food-log/get-food-logs";
 
 import ProductProtoMapper from "../mappers/product.proto.mapper";
-import NutritionCoefficientsProtoMapper from "../mappers/nutrition-coefficients.proto.mapper";
+import NutritionCoefficientProtoMapper from "../mappers/nutrition-coefficients.proto.mapper";
 import FoodLogProtoMapper from "../mappers/food-log.proto.mapper";
+import ProductId from "../../../domain/product/value-objects/product-id.vo";
+import NutritionCoefficientId from "../../../domain/nutrition-coefficient/value-objects/nutrition-coefficient-id.vo";
+import FoodLogId from "../../../domain/food-log/value-objects/food-log-id.vo";
 
 export class GusteauHandler {
     constructor(
         private readonly createProductUseCase: CreateProductUseCase,
         private readonly getProductUseCase: GetProductUseCase,
-        private readonly getNutritionCoefficientsUseCase: GetNutritionCoefficientsUseCase,
-        private readonly updateNutritionCoefficientsUseCase: UpdateNutritionCoefficientsUseCase,
+        private readonly getNutritionCoefficientUseCase: GetNutritionCoefficientUseCase,
+        private readonly updateNutritionCoefficientUseCase: UpdateNutritionCoefficientUseCase,
         private readonly createFoodLogUseCase: CreateFoodLogUseCase,
         private readonly getFoodLogsUseCase: GetFoodLogsUseCase,
     ) {
@@ -35,7 +38,7 @@ export class GusteauHandler {
         callback: grpc.sendUnaryData<gusteauProto.ProductResponse>
     ) {
         try {
-            const product = ProductProtoMapper.requestToDomain(call.request);
+            const product = ProductProtoMapper.toDomain(call.request as gusteauProto.ProductObject);
 
             const result = await this.createProductUseCase.execute(product);
 
@@ -58,9 +61,9 @@ export class GusteauHandler {
         callback: grpc.sendUnaryData<gusteauProto.ProductResponse>
     ) {
         try {
-            const product = await this.getProductUseCase.execute(
-                ProductProtoMapper.requestToDomain(call.request),
-            );
+
+            const {id} = call.request;
+            const product = await this.getProductUseCase.execute(ProductId.create(id));
 
             const response = gusteauProto.ProductResponse.create({
                 product: ProductProtoMapper.toProto(product),
@@ -73,24 +76,22 @@ export class GusteauHandler {
         }
     }
 
-    async getNutritionCoefficients(
+    async getNutritionCoefficient(
         call: grpc.ServerUnaryCall<
-            gusteauProto.GetNutritionCoefficientsRequest,
-            gusteauProto.NutritionCoefficientsResponse
+            gusteauProto.GetNutritionCoefficientRequest,
+            gusteauProto.NutritionCoefficientResponse
         >,
-        callback: grpc.sendUnaryData<gusteauProto.NutritionCoefficientsResponse>
+        callback: grpc.sendUnaryData<gusteauProto.NutritionCoefficientResponse>
     ) {
         try {
-            const coefficients =
-                await this.getNutritionCoefficientsUseCase.execute(
-                    NutritionCoefficientsProtoMapper.requestToDomain(call.request),
-                );
+            const {profileId} = call.request;
 
-            const response =
-                gusteauProto.NutritionCoefficientsResponse.create({
-                    nutritionCoefficients:
-                        NutritionCoefficientsProtoMapper.toProto(coefficients),
-                });
+            const coefficient =
+                await this.getNutritionCoefficientUseCase.execute(NutritionCoefficientId.create(profileId));
+
+            const response = gusteauProto.NutritionCoefficientResponse.create({
+                nutritionCoefficient: NutritionCoefficientProtoMapper.toProto(coefficient),
+            });
 
             callback(null, response);
         } catch (err: any) {
@@ -99,28 +100,28 @@ export class GusteauHandler {
         }
     }
 
-    async updateNutritionCoefficients(
+    async updateNutritionCoefficient(
         call: grpc.ServerUnaryCall<
-            gusteauProto.UpdateNutritionCoefficientsRequest,
-            gusteauProto.NutritionCoefficientsResponse
+            gusteauProto.UpdateNutritionCoefficientRequest,
+            gusteauProto.NutritionCoefficientResponse
         >,
-        callback: grpc.sendUnaryData<gusteauProto.NutritionCoefficientsResponse>
+        callback: grpc.sendUnaryData<gusteauProto.NutritionCoefficientResponse>
     ) {
         try {
-            const coefficients =
-                NutritionCoefficientsProtoMapper.requestToDomain(
-                    call.request,
+            const coefficient =
+                NutritionCoefficientProtoMapper.toDomain(
+                    call.request as gusteauProto.NutritionCoefficientObject,
                 );
 
             const result =
-                await this.updateNutritionCoefficientsUseCase.execute(
-                    coefficients,
+                await this.updateNutritionCoefficientUseCase.execute(
+                    coefficient,
                 );
 
             const response =
-                gusteauProto.NutritionCoefficientsResponse.create({
-                    nutritionCoefficients:
-                        NutritionCoefficientsProtoMapper.toProto(result),
+                gusteauProto.NutritionCoefficientResponse.create({
+                    nutritionCoefficient:
+                        NutritionCoefficientProtoMapper.toProto(result),
                 });
 
             callback(null, response);
@@ -138,7 +139,7 @@ export class GusteauHandler {
         callback: grpc.sendUnaryData<gusteauProto.FoodLogResponse>
     ) {
         try {
-            const foodLog = FoodLogProtoMapper.requestToDomain(call.request);
+            const foodLog = FoodLogProtoMapper.toDomain(call.request as gusteauProto.FoodLogObject);
 
             const result = await this.createFoodLogUseCase.execute(foodLog);
 
@@ -153,21 +154,21 @@ export class GusteauHandler {
         }
     }
 
-    async getFoodLogs(
+    async getFoodLog(
         call: grpc.ServerUnaryCall<
             gusteauProto.GetFoodLogsRequest,
             gusteauProto.FoodLogsResponse
         >,
-        callback: grpc.sendUnaryData<gusteauProto.FoodLogsResponse>
+        callback: grpc.sendUnaryData<gusteauProto.FoodLogResponse>
     ) {
         try {
-            const foodLogs = await this.getFoodLogsUseCase.execute(
-                FoodLogProtoMapper.requestToDomain(call.request),
-            );
+            const {profileId} = call.request;
+
+            const foodLogs = await this.getFoodLogsUseCase.execute(FoodLogId.create(profileId));
 
             const response = gusteauProto.FoodLogsResponse.create({
                 foodLogs: {
-                    foodLogs: foodLogs.map(FoodLogProtoMapper.toProto),
+                    foodLog: foodLogs.map(FoodLogProtoMapper.toProto),
                 },
             });
 

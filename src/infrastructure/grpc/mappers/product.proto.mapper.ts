@@ -1,7 +1,5 @@
 import * as gusteauProto from "../../../contracts/proto/gusteau";
-import ProductEntity, {
-    ProductEntityProps,
-} from "../../../domain/product/product.entity";
+import ProductEntity from "../../../domain/product/product.entity";
 import ProductId from "../../../domain/product/value-objects/product-id.vo";
 import ProductName from "../../../domain/product/value-objects/product-name.vo";
 import ProductCalories from "../../../domain/product/value-objects/product-calories.vo";
@@ -26,7 +24,7 @@ export class ProductProtoMapper {
     }
 
     static toDomain(product: gusteauProto.ProductObject): ProductEntity {
-        const productEntityProps: ProductEntityProps = {
+        const productEntityProps = {
             id: new ProductId(product.id),
             profileId: new ProfileId(product.profileId),
             name: new ProductName(product.name),

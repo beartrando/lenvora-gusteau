@@ -17,15 +17,15 @@ import messageConsumersConfig from "../infrastructure/message/configs/consumers.
 import jobConsumersConfig from "../infrastructure/job/configs/job.consumers.config";
 import SendToStreamConsumer from "../infrastructure/job/consumers/send-to-stream.consumer";
 import PrismaProductRepository from "../infrastructure/db/repositories/prisma-product.repository";
-import PrismaNutritionCoefficientsRepository
+import PrismaNutritionCoefficientRepository
     from "../infrastructure/db/repositories/prisma-nutrition-coefficient.repository";
 import PrismaFoodLogRepository from "../infrastructure/db/repositories/prisma-food-log.repository";
 import CreateProductUseCase from "../application/use-cases/product/create-product";
 import GetProductUseCase from "../application/use-cases/product/get-product";
-import GetNutritionCoefficientsUseCase
-    from "../application/use-cases/nutrition-coefficients/get-nutrition-coefficients";
-import UpdateNutritionCoefficientsUseCase
-    from "../application/use-cases/nutrition-coefficients/update-nutrition-coefficients";
+import GetNutritionCoefficientUseCase
+    from "../application/use-cases/nutrition-coefficient/get-nutrition-coefficient";
+import UpdateNutritionCoefficientUseCase
+    from "../application/use-cases/nutrition-coefficient/update-nutrition-coefficient";
 import CreateFoodLogUseCase from "../application/use-cases/food-log/create-food-log";
 import GetFoodLogsUseCase from "../application/use-cases/food-log/get-food-logs";
 import GusteauHandler from "../infrastructure/grpc/handlers/gusteau.handler";
@@ -37,7 +37,7 @@ function buildApplication() {
     const dbService = new DbService();
 
     const productRepository = new PrismaProductRepository(dbService.client);
-    const nutritionCoefficientsRepository = new PrismaNutritionCoefficientsRepository(dbService.client);
+    const nutritionCoefficientRepository = new PrismaNutritionCoefficientRepository(dbService.client);
     const foodLogRepository = new PrismaFoodLogRepository(dbService.client);
 
     const createProductUseCase = new CreateProductUseCase(
@@ -48,14 +48,14 @@ function buildApplication() {
         productRepository,
     );
 
-    const getNutritionCoefficientsUseCase =
-        new GetNutritionCoefficientsUseCase(
-            nutritionCoefficientsRepository,
+    const getNutritionCoefficientUseCase =
+        new GetNutritionCoefficientUseCase(
+            nutritionCoefficientRepository,
         );
 
-    const updateNutritionCoefficientsUseCase =
-        new UpdateNutritionCoefficientsUseCase(
-            nutritionCoefficientsRepository,
+    const updateNutritionCoefficientUseCase =
+        new UpdateNutritionCoefficientUseCase(
+            nutritionCoefficientRepository,
         );
 
     const createFoodLogUseCase = new CreateFoodLogUseCase(
@@ -97,8 +97,8 @@ function buildApplication() {
     const gusteauHandler = new GusteauHandler(
         createProductUseCase,
         getProductUseCase,
-        getNutritionCoefficientsUseCase,
-        updateNutritionCoefficientsUseCase,
+        getNutritionCoefficientUseCase,
+        updateNutritionCoefficientUseCase,
         createFoodLogUseCase,
         getFoodLogsUseCase,
     );

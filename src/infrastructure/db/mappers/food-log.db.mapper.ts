@@ -1,4 +1,4 @@
-import {FoodLogs} from "@prisma/client";
+import {FoodLog} from "@prisma/client";
 import FoodLogEntity from "../../../domain/food-log/food-log.entity";
 import FoodLogId from "../../../domain/food-log/value-objects/food-log-id.vo";
 import FoodLogWeight from "../../../domain/food-log/value-objects/food-log-weight.vo";
@@ -11,7 +11,7 @@ import ProductCarbs from "../../../domain/product/value-objects/product-carbs.vo
 import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
 
 type FoodLogSaveData = Omit<
-    FoodLogs,
+    FoodLog,
     "createdAt" | "updatedAt"
 >;
 
@@ -34,7 +34,7 @@ export class FoodLogDbMapper {
     }
 
     static toDomain(
-        foodLog: FoodLogs,
+        foodLog: FoodLog,
     ): FoodLogEntity {
         return FoodLogEntity.create({
             id: new FoodLogId(foodLog.id),

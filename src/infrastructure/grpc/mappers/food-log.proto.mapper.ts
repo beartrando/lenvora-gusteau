@@ -1,7 +1,5 @@
 import * as gusteauProto from "../../../contracts/proto/gusteau";
-import FoodLogEntity, {
-    FoodLogEntityProps,
-} from "../../../domain/food-log/food-log.entity";
+import FoodLogEntity from "../../../domain/food-log/food-log.entity";
 import FoodLogId from "../../../domain/food-log/value-objects/food-log-id.vo";
 import FoodLogWeight from "../../../domain/food-log/value-objects/food-log-weight.vo";
 import FoodLogPlanned from "../../../domain/food-log/value-objects/food-log-planned.vo";
@@ -31,7 +29,7 @@ export class FoodLogProtoMapper {
     }
 
     static toDomain(foodLog: gusteauProto.FoodLogObject): FoodLogEntity {
-        const foodLogEntityProps: FoodLogEntityProps = {
+        const foodLogEntityProps = {
             id: new FoodLogId(foodLog.id),
             profileId: new ProfileId(foodLog.profileId),
             productName: new ProductName(foodLog.productName),

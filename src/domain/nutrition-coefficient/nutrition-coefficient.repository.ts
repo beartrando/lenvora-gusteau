@@ -1,9 +1,9 @@
-import NutritionCoefficientsEntity from "./nutrition-coefficients.entity";
+import NutritionCoefficientEntity from "./nutrition-coefficient.entity";
 import ProfileId from "../profile/value-objects/profile-id.vo";
 
 export interface NutritionCoefficientRepository {
-    save(coefficients: NutritionCoefficientsEntity): Promise<NutritionCoefficientsEntity>;
-    findByProfileId(profileId: ProfileId): Promise<NutritionCoefficientsEntity>;
+    save(coefficients: NutritionCoefficientEntity): Promise<NutritionCoefficientEntity>;
+    findByProfileId(profileId: ProfileId): Promise<NutritionCoefficientEntity>;
 }
 
 export default NutritionCoefficientRepository;

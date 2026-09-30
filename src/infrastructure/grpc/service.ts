@@ -1,5 +1,6 @@
 import * as grpc from "@grpc/grpc-js";
 import * as healthProto from '../../contracts/proto/common/health';
+import * as gusteauProto from '../../contracts/proto/gusteau';
 import logger from "@shared/logger";
 import HealthHandler from "./handlers/health.handler";
 import GusteauHandler from "./handlers/gusteau.handler";
@@ -47,13 +48,13 @@ export class GrpcService {
     }
 
     private registerGusteauService() {
-        this.server.addService(healthProto.HealthService, {
+        this.server.addService(gusteauProto.GusteauService, {
             CreateProduct: this.gusteauHandler.createProduct.bind(this.gusteauHandler),
             GetProduct: this.gusteauHandler.getProduct.bind(this.gusteauHandler),
-            GetNutritionCoefficients: this.gusteauHandler.getNutritionCoefficients.bind(this.gusteauHandler),
-            UpdateNutritionCoefficients: this.gusteauHandler.updateNutritionCoefficients.bind(this.gusteauHandler),
+            GetNutritionCoefficient: this.gusteauHandler.getNutritionCoefficient.bind(this.gusteauHandler),
+            UpdateNutritionCoefficient: this.gusteauHandler.updateNutritionCoefficient.bind(this.gusteauHandler),
             CreateFoodLog: this.gusteauHandler.createFoodLog.bind(this.gusteauHandler),
-            GetFoodLogs: this.gusteauHandler.getFoodLogs.bind(this.gusteauHandler),
+            GetFoodLog: this.gusteauHandler.getFoodLog.bind(this.gusteauHandler),
         });
     }
     private registerHealthService() {

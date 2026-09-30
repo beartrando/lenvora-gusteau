@@ -1,19 +1,19 @@
-import {NutritionCoefficients} from "@prisma/client";
-import NutritionCoefficientsEntity from "../../../domain/nutrition-coefficients/nutrition-coefficients.entity";
-import NutritionCoefficientsId from "../../../domain/nutrition-coefficients/value-objects/nutrition-coefficients-id.vo";
-import NutritionProteinCoefficient from "../../../domain/nutrition-coefficients/value-objects/nutrition-protein-coefficient.vo";
-import NutritionFatCoefficient from "../../../domain/nutrition-coefficients/value-objects/nutrition-fat-coefficient.vo";
-import NutritionCarbsCoefficient from "../../../domain/nutrition-coefficients/value-objects/nutrition-carbs-coefficient.vo";
+import {NutritionCoefficient} from "@prisma/client";
+import NutritionCoefficientEntity from "../../../domain/nutrition-coefficient/nutrition-coefficient.entity";
+import NutritionCoefficientId from "../../../domain/nutrition-coefficient/value-objects/nutrition-coefficient-id.vo";
+import NutritionProteinCoefficient from "../../../domain/nutrition-coefficient/value-objects/nutrition-protein-coefficient.vo";
+import NutritionFatCoefficient from "../../../domain/nutrition-coefficient/value-objects/nutrition-fat-coefficient.vo";
+import NutritionCarbsCoefficient from "../../../domain/nutrition-coefficient/value-objects/nutrition-carbs-coefficient.vo";
 import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
 
 type NutritionCoefficientSaveData = Omit<
-    NutritionCoefficients,
+    NutritionCoefficient,
     "createdAt" | "updatedAt"
 >;
 
 export class NutritionCoefficientDbMapper {
     static toPersistence(
-        coefficients: NutritionCoefficientsEntity,
+        coefficients: NutritionCoefficientEntity,
     ): NutritionCoefficientSaveData {
         return {
             id: coefficients.id.value,
@@ -26,10 +26,10 @@ export class NutritionCoefficientDbMapper {
     }
 
     static toDomain(
-        coefficients: NutritionCoefficients,
-    ): NutritionCoefficientsEntity {
-        return NutritionCoefficientsEntity.create({
-            id: new NutritionCoefficientsId(coefficients.id),
+        coefficients: NutritionCoefficient,
+    ): NutritionCoefficientEntity {
+        return NutritionCoefficientEntity.create({
+            id: new NutritionCoefficientId(coefficients.id),
             profileId: new ProfileId(coefficients.profileId),
 
             protein: new NutritionProteinCoefficient(coefficients.protein),

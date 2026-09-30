@@ -1,10 +1,10 @@
-import NutritionCoefficientEntity from "../../../domain/nutrition-coefficient/nutrition-coefficient";
+import NutritionCoefficientEntity from "../../../domain/nutrition-coefficient/nutrition-coefficient.entity";
 import NutritionCoefficientRepository from "../../../domain/nutrition-coefficient/nutrition-coefficient.repository";
 import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
 import NutritionCoefficientDbMapper from "../mappers/nutrition-coefficient.db.mapper";
 import {PrismaClient} from "@prisma/client";
 
-export class PrismaNutritionCoefficientsRepository
+export class PrismaNutritionCoefficientRepository
     implements NutritionCoefficientRepository {
 
     constructor(
@@ -40,4 +40,4 @@ export class PrismaNutritionCoefficientsRepository
     }
 }
 
-export default PrismaNutritionCoefficientsRepository;
+export default PrismaNutritionCoefficientRepository;
