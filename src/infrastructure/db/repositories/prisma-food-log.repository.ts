@@ -1,65 +1,34 @@
-import {PrismaClient} from "@prisma/client";
+import FoodLogEntity from "../../../domain/food-log/food-log.entity";
+import FoodLogRepository from "../../../domain/food-log/food-log.repository";
+import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
+import prisma from "../prisma";
+import FoodLogDbMapper from "../mappers/food-log.db.mapper";
 
-import SessionRepository from "../../../domain/session/session.repository";
-import SessionEntity from "../../../domain/session/session.entity";
+export class PrismaFoodLogRepository implements FoodLogRepository {
+    async save(foodLog: FoodLogEntity): Promise<FoodLogEntity> {
+        const data = FoodLogDbMapper.toPersistence(foodLog);
 
-import SessionRefreshToken from "../../../domain/session/value-objects/sesion-refresh-token.vo";
-import FoodLogDbMapper from "../mappers/food-log.mapper";
-import UserId from "../../../domain/user/value-objects/user-id.vo";
+        const result = await prisma.foodLogs.upsert({
+            where: {
+                id: data.id,
+            },
+            create: data,
+            update: data,
+        });
 
-export class PrismaFoodLogRepository implements SessionRepository {
-
-    constructor(
-        private readonly prisma: PrismaClient,
-    ) {
+        return FoodLogDbMapper.toDomain(result);
     }
 
-    async findByRefreshToken(
-        refreshToken: SessionRefreshToken,
-    ): Promise<SessionEntity | null> {
-
-        const session = await this.prisma.session.findFirst({
+    async findByProfileId(
+        profileId: ProfileId,
+    ): Promise<FoodLogEntity[]> {
+        const results = await prisma.foodLogs.findMany({
             where: {
-                refreshToken: refreshToken.value,
+                profileId: profileId.value,
             },
         });
 
-        if (!session) {
-            return null;
-        }
-
-        return FoodLogDbMapper.toDomain(session);
-    }
-
-    async save(
-        session: SessionEntity,
-    ): Promise<void> {
-
-        const sessionDb = FoodLogDbMapper.toPersistence(session);
-
-        const {
-            id,
-            ...update
-        } = sessionDb;
-
-        await this.prisma.session.upsert({
-            where: {
-                id: sessionDb.id,
-            },
-            create: sessionDb,
-            update,
-        });
-    }
-
-    async deleteByUserId(
-        userId: UserId,
-    ): Promise<void> {
-
-        await this.prisma.session.deleteMany({
-            where: {
-                userId: userId.value,
-            },
-        });
+        return results.map(FoodLogDbMapper.toDomain);
     }
 }
 

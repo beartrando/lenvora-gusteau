@@ -33,23 +33,61 @@ import FetchProfileUseCase from "../application/use-cases/profile/fetch-profile"
 import ConnectToBattleUseCase from "../application/use-cases/battle/connect-to-battle";
 import ConnectingBattleRequestConsumer from "../infrastructure/message/consumers/connecting-battle-request";
 import RefreshTokensUseCase from "../application/use-cases/auth/refresh-tokens";
+import PrismaProductRepository from "../infrastructure/db/repositories/prisma-product.repository";
+import PrismaNutritionCoefficientsRepository
+    from "../infrastructure/db/repositories/prisma-nutrition-coefficient.repository";
+import PrismaFoodLogRepository from "../infrastructure/db/repositories/prisma-food-log.repository";
+import CreateProductUseCase from "../application/use-cases/product/create-product";
+import GetProductUseCase from "../application/use-cases/product/get-product";
+import GetNutritionCoefficientsUseCase
+    from "../application/use-cases/nutrition-coefficients/get-nutrition-coefficients";
+import UpdateNutritionCoefficientsUseCase
+    from "../application/use-cases/nutrition-coefficients/update-nutrition-coefficients";
+import CreateFoodLogUseCase from "../application/use-cases/food-log/create-food-log";
+import GetFoodLogsUseCase from "../application/use-cases/food-log/get-food-logs";
 
 
 function buildApplication() {
 
+    const productRepository = new PrismaProductRepository();
+    const nutritionCoefficientsRepository = new PrismaNutritionCoefficientsRepository();
+    const foodLogRepository = new PrismaFoodLogRepository();
 
-    const httpService = new HttpClient(
-        httpClientConfig.host,
-        httpClientConfig.port,
+    const createProductUseCase = new CreateProductUseCase(
+        productRepository,
     );
 
-    const deviceId = new DeviceDeviceId(domainBattleConfig.deviceId);
-    const anonimousSignInUseCase = new AnonymousSignInUseCase(httpService);
-    const refreshTokensUseCase = new RefreshTokensUseCase(httpService);
+    const getProductUseCase = new GetProductUseCase(
+        productRepository,
+    );
 
-    const authService = new AuthService(authConfig, anonimousSignInUseCase, refreshTokensUseCase, deviceId);
-    const fetchProfileUseCase = new FetchProfileUseCase(httpService);
-    const profileService = new ProfileService(authService, fetchProfileUseCase);
+    const getNutritionCoefficientsUseCase =
+        new GetNutritionCoefficientsUseCase(
+            nutritionCoefficientsRepository,
+        );
+
+    const updateNutritionCoefficientsUseCase =
+        new UpdateNutritionCoefficientsUseCase(
+            nutritionCoefficientsRepository,
+        );
+
+    const createFoodLogUseCase = new CreateFoodLogUseCase(
+        foodLogRepository,
+    );
+
+    const getFoodLogsUseCase = new GetFoodLogsUseCase(
+        foodLogRepository,
+    );
+
+
+
+
+
+
+
+
+
+
 
     const jobService = new JobService(
         jobConfig,
@@ -62,38 +100,11 @@ function buildApplication() {
         messageConsumersConfig,
     );
 
-    const battleMoveUseCase = new BattleUpdatedUseCase(profileService, jobService, jobConsumersConfig.websocketSendEvent);
-    const battleHandler = new BattleHandler(battleMoveUseCase);
-
-    const websocketClient = new WebsocketClient(
-        authService,
-        profileService,
-        websocketClientConfig,
-        battleHandler
-    );
-
-    const websocketClientService = new WebsocketClientService(websocketClient);
-
-    const connectToBattleUseCase = new ConnectToBattleUseCase(jobService, jobConsumersConfig.websocketSendEvent);
-    const connectingBattleRequestConsumer = new ConnectingBattleRequestConsumer(connectToBattleUseCase);
-
-    const sendToStreamConsumer = new SendToStreamConsumer(websocketClientService);
-
-    jobService.registerWorker(
-        jobConsumersConfig.websocketSendEvent,
-        sendToStreamConsumer.execute.bind(sendToStreamConsumer)
-    );
-
     const healthUseCase = new HealthUseCase(
         authService,
         jobService,
         messageService,
         websocketClientService,
-    );
-
-    messageService.addConsumer(
-        messageConsumersConfig.gusteauConnectingRequest,
-        connectingBattleRequestConsumer.execute.bind(connectingBattleRequestConsumer)
     );
 
     const statusUseCase = new StatusUseCase();
@@ -113,11 +124,9 @@ function buildApplication() {
     );
 
     return new Application(
-        authService,
         grpcService,
         jobService,
         messageService,
-        websocketClientService,
     );
 }
 

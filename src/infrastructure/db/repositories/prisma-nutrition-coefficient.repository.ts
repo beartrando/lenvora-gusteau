@@ -1,66 +1,39 @@
-import {PrismaClient} from "@prisma/client";
+import NutritionCoefficientsEntity from "../../../domain/nutrition-coefficients/nutrition-coefficients.entity";
+import NutritionCoefficientsRepository from "../../../domain/nutrition-coefficients/nutrition-coefficients.repository";
+import ProfileId from "../../../domain/profile/value-objects/profile-id.vo";
+import prisma from "../prisma";
+import NutritionCoefficientsDbMapper from "../mappers/nutrition-coefficients.db.mapper";
 
-import SessionRepository from "../../../domain/session/session.repository";
-import SessionEntity from "../../../domain/session/session.entity";
-
-import SessionRefreshToken from "../../../domain/session/value-objects/sesion-refresh-token.vo";
-import FoodLogDbMapper from "../mappers/food-log.mapper";
-import UserId from "../../../domain/user/value-objects/user-id.vo";
-
-export class PrismaFoodLogRepository implements SessionRepository {
-
-    constructor(
-        private readonly prisma: PrismaClient,
-    ) {
-    }
-
-    async findByRefreshToken(
-        refreshToken: SessionRefreshToken,
-    ): Promise<SessionEntity | null> {
-
-        const session = await this.prisma.session.findFirst({
-            where: {
-                refreshToken: refreshToken.value,
-            },
-        });
-
-        if (!session) {
-            return null;
-        }
-
-        return FoodLogDbMapper.toDomain(session);
-    }
+export class PrismaNutritionCoefficientsRepository
+    implements NutritionCoefficientsRepository {
 
     async save(
-        session: SessionEntity,
-    ): Promise<void> {
+        coefficients: NutritionCoefficientsEntity,
+    ): Promise<NutritionCoefficientsEntity> {
+        const data = NutritionCoefficientsDbMapper.toPersistence(coefficients);
 
-        const sessionDb = FoodLogDbMapper.toPersistence(session);
-
-        const {
-            id,
-            ...update
-        } = sessionDb;
-
-        await this.prisma.session.upsert({
+        const result = await prisma.nutritionCoefficients.upsert({
             where: {
-                id: sessionDb.id,
+                id: data.id,
             },
-            create: sessionDb,
-            update,
+            create: data,
+            update: data,
         });
+
+        return NutritionCoefficientsDbMapper.toDomain(result);
     }
 
-    async deleteByUserId(
-        userId: UserId,
-    ): Promise<void> {
-
-        await this.prisma.session.deleteMany({
+    async findByProfileId(
+        profileId: ProfileId,
+    ): Promise<NutritionCoefficientsEntity> {
+        const result = await prisma.nutritionCoefficients.findUniqueOrThrow({
             where: {
-                userId: userId.value,
+                profileId: profileId.value,
             },
         });
+
+        return NutritionCoefficientsDbMapper.toDomain(result);
     }
 }
 
-export default PrismaFoodLogRepository;
+export default PrismaNutritionCoefficientsRepository;

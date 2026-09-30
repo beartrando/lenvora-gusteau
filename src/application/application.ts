@@ -7,11 +7,9 @@ import AuthService from "../infrastructure/auth/service";
 
 export class Application {
     constructor(
-        private readonly authService: AuthService,
         private readonly grpcService: GrpcService,
         private readonly jobService: JobService,
         private readonly messageService: MessageService,
-        private readonly websocketClientService: WebsocketClientService,
     ) {
     }
 
@@ -29,11 +27,9 @@ export class Application {
 
 
         try {
-            await this.authService.start();
             await this.messageService.start();
             await this.jobService.start();
             await this.grpcService.start();
-            await this.websocketClientService.start();
             logger.info(
                 '🚀 Gusteau service started',
             );
@@ -47,8 +43,6 @@ export class Application {
     }
 
     async stop() {
-        await this.websocketClientService.stop();
-        await this.authService.stop();
         await this.grpcService.stop();
         await this.jobService.stop();
         await this.messageService.stop();
