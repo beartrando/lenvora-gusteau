@@ -1,7 +1,7 @@
 import UserId from "./value-objects/user-id.vo";
 
 type UserEntityProps = {
-    id?: UserId;
+    id: UserId;
 };
 
 export class UserEntity {
@@ -11,10 +11,10 @@ export class UserEntity {
     }
 
     static create(
-        props: UserEntityProps = {},
+        props: UserEntityProps,
     ): UserEntity {
         return new UserEntity(
-            props.id ?? UserId.create()
+            props.id,
         );
     }
 
