@@ -14,7 +14,7 @@ export class UserEntity {
         props: UserEntityProps = {},
     ): UserEntity {
         return new UserEntity(
-            props.id
+            props.id ?? UserId.create()
         );
     }
 

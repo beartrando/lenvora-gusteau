@@ -14,16 +14,13 @@ import LivezUseCase from "../application/use-cases/health/livez";
 import ReadyzUseCase from "../application/use-cases/health/readyz";
 import HealthHandler from "../infrastructure/grpc/handlers/health.handler";
 import messageConsumersConfig from "../infrastructure/message/configs/consumers.config";
-import jobConsumersConfig from "../infrastructure/job/configs/job.consumers.config";
-import SendToStreamConsumer from "../infrastructure/job/consumers/send-to-stream.consumer";
 import PrismaProductRepository from "../infrastructure/db/repositories/prisma-product.repository";
 import PrismaNutritionCoefficientRepository
     from "../infrastructure/db/repositories/prisma-nutrition-coefficient.repository";
 import PrismaFoodLogRepository from "../infrastructure/db/repositories/prisma-food-log.repository";
 import CreateProductUseCase from "../application/use-cases/product/create-product";
 import GetProductUseCase from "../application/use-cases/product/get-product";
-import GetNutritionCoefficientUseCase
-    from "../application/use-cases/nutrition-coefficient/get-nutrition-coefficient";
+import GetNutritionCoefficientUseCase from "../application/use-cases/nutrition-coefficient/get-nutrition-coefficient";
 import UpdateNutritionCoefficientUseCase
     from "../application/use-cases/nutrition-coefficient/update-nutrition-coefficient";
 import CreateFoodLogUseCase from "../application/use-cases/food-log/create-food-log";
