@@ -18,7 +18,6 @@ COPY services/gusteau/package*.json ./services/gusteau/
 COPY services/gusteau/jest.config.js ./services/gusteau/
 COPY services/gusteau/tsconfig.json ./services/gusteau/
 COPY services/gusteau/src ./services/gusteau/src/
-COPY services/gusteau/__tests__ ./services/gusteau/__tests__/
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
