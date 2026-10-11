@@ -73,4 +73,3 @@ export class GrpcService {
 }
 
 export default GrpcService;
-
