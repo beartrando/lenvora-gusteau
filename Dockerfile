@@ -17,6 +17,7 @@ COPY tsconfig.base.json ./
 COPY services/gusteau/package*.json ./services/gusteau/
 COPY services/gusteau/jest.config.js ./services/gusteau/
 COPY services/gusteau/tsconfig.json ./services/gusteau/
+COPY services/gusteau/jest.setup.ts ./services/gusteau/
 COPY services/gusteau/src ./services/gusteau/src/
 
 RUN apt-get update \
